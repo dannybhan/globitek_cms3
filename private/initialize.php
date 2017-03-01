@@ -1,12 +1,14 @@
 <?php
 
+$options = ['use_only_cookies' => 1, 'cookie_lifetime' => 86400, 'cookie_httponly'];
+
 // Make sure output buffering is turned on in php.ini before
 // attempting page redirects. Or else uncomment the line below.
 ob_start();
 
 // Enable sessions
 // TODO add configurations
-session_start();
+session_start($options);
 
 // Turns off any browser built-in XSS protections
 // LEAVE THIS LINE IN WHILE YOU ARE LEARNING

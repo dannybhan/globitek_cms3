@@ -1,5 +1,6 @@
 <?php
 require_once('../../../private/initialize.php');
+require_login();
 
 if(!isset($_GET['id'])) {
   redirect_to('../index.php');
@@ -13,12 +14,13 @@ $state = array(
   'country_id' => $_GET['id']
 );
 
-if(is_post_request()) {
+if(is_post_request() && request_is_same_domain()) {
 
   // Confirm that values are present before accessing them.
   if(isset($_POST['name'])) { $state['name'] = $_POST['name']; }
   if(isset($_POST['code'])) { $state['code'] = $_POST['code']; }
 
+if (csrf_token_is_valid()) {
   $result = insert_state($state);
   if($result === true) {
     $new_id = db_insert_id($db);
@@ -26,6 +28,10 @@ if(is_post_request()) {
   } else {
     $errors = $result;
   }
+}
+else {
+    $errors = 'Error: invalid request';
+}
 }
 ?>
 <?php $page_title = 'Staff: New State'; ?>
@@ -37,7 +43,7 @@ if(is_post_request()) {
   <h1>New State</h1>
 
   <?php echo display_errors($errors); ?>
-
+    
   <form action="new.php?id=<?php echo h($state['country_id']); ?>" method="post">
     Name:<br />
     <input type="text" name="name" value="<?php echo h($state['name']); ?>" /><br />

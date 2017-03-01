@@ -1,5 +1,6 @@
 <?php
 require_once('../../../private/initialize.php');
+require_login();
 
 if(!isset($_GET['id'])) {
   redirect_to('../index.php');
@@ -11,19 +12,23 @@ $state = db_fetch_assoc($states_result);
 // Set default values for all variables the page needs.
 $errors = array();
 
-if(is_post_request()) {
+if(is_post_request() && request_is_same_domain()) {
 
   // Confirm that values are present before accessing them.
   if(isset($_POST['name'])) { $state['name'] = $_POST['name']; }
   if(isset($_POST['code'])) { $state['code'] = $_POST['code']; }
   if(isset($_POST['country_id'])) { $state['country_id'] = $_POST['country_id']; }
-
+if (csrf_token_is_valid()) {
   $result = update_state($state);
   if($result === true) {
     redirect_to('show.php?id=' . $state['id']);
   } else {
     $errors = $result;
   }
+}
+else {
+    $errors = 'Error: invalid request';
+}
 }
 ?>
 <?php $page_title = 'Staff: Edit State ' . $state['name']; ?>
