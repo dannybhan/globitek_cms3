@@ -43,7 +43,7 @@ The following **required** functionality is completed:
 
 7\. [x]  Required: Ensure the application is not vulnerable to XSS attacks.
 
-8\. [ ]  Required: Ensure the application is not vulnerable to SQL Injection attacks.
+8\. [x]  Required: Ensure the application is not vulnerable to SQL Injection attacks.
 
 9\. [x]  Required: Run all tests from Objective 1 again and confirm that your application is no longer vulnerable to any test.
 
